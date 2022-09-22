@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const port = 8080;
 
+const {startDatabase} = require('./database/mongo');
+const {insertProduct, getProducts} = require('./database/products');
+
+
 const product = [
     {
         "stock_number":"12345",

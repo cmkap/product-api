@@ -1,0 +1,28 @@
+{
+  "name": "product-api",
+  "version": "1.0.0",
+  "description": "Product Api",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "{repo}"
+  },
+  "keywords": [
+    "product"
+  ],
+  "author": "{name}",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mongodb": "^4.10.0",
+    "mongodb-memory-server": "^8.9.2"
+  },
+  "engines": {
+    "node": ">= 14.0.0",
+    "npm": ">= 6.0.0"
+  }
+}

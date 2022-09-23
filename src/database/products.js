@@ -1,6 +1,6 @@
 const {getDatabase} = require('./mongo');
 
-const {ObjectId} = require('mongodb');
+// const {ObjectId} = require('mongodb');
 
 
 const collectionName = 'products';
@@ -16,28 +16,41 @@ async function getProducts() {
   return await database.collection(collectionName).find({}).toArray();
 }
 
+async function getSingleProduct(id) {
+  const database = await getDatabase();
+  return await database.collection(collectionName).findOne({
+    stock_number: id
+  })
+}
+
 async function deleteProduct(id) {
   const database = await getDatabase();
-  await database.collection(collectionName).deletOne({
-    _id: new ObjectId(id)
+  await database.collection(collectionName).deleteOne({
+    stock_number: id 
   })
 }
 
 async function updateProduct(id, product) {
   const database = await getDatabase();
-  delete product._id;
-  await database.collection(collectionName).update(
-    { _id: new ObjectId(id, ), },
+  await database.collection(collectionName).findOneAndUpdate(
+    { stock_number: id },
     {
       $set: {
         ...product
-      },
+      }
     },
-  );
+    {
+      upsert: true
+    }
+  )
+  
+
 }
 module.exports = {
   insertProduct,
   getProducts,
+  getSingleProduct,
   deleteProduct,
   updateProduct
 };
+

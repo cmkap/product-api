@@ -1,9 +1,18 @@
 const express = require('express');
-const app = express();
+const bodyParser = require('body-parser')
+const cors = require('cors')
+
 const port = 8080;
 
+const app = express();
+
+
+app.use(bodyParser.json())
+
+app.use(cors());
+
 const {startDatabase} = require('./database/mongo');
-const {insertProduct, getProducts, deleteProduct, updateProduct} = require('./database/products');
+const {insertProduct, getProducts, getSingleProduct, deleteProduct, updateProduct} = require('./database/products');
 
 
 
@@ -13,9 +22,8 @@ app.get('/products', async(req,res) => {
 });
 
 // This responds a GET request
-app.get('/products/:productId', (req, res) => {
-    console.log("Got a GET request");
-    res.send('Hello GET\n');
+app.get('/products/:productId', async(req, res) => {
+    res.send(await getSingleProduct(req.params.productId));
 })
 
 // This responds a POST request
@@ -28,12 +36,12 @@ app.post('/products', async(req, res) => {
 // This responds a PUT request
 app.put('/products/:productId', async(req, res) => {
     const updatedProduct = req.body;
-  await updateProduct(req.params.id, updatedProduct);
-  res.send({ message: 'Product updated.' });
+    await updateProduct(req.params.productId, updatedProduct);
+    res.send({ message: 'Product updated.' });
 })
 
-// This respinds a Delete request
-app.delete('product/:id', async (req, res) => {
+// This responds a Delete request
+app.delete('/products/:id', async (req, res) => {
     await deleteProduct(req.params.id);
     res.send({ message: 'Product removed.' });
   });

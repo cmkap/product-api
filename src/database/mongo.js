@@ -4,9 +4,9 @@ const {MongoClient} = require('mongodb');
 let database = null;
 
 async function startDatabase() {
-  const mongo = new MongoMemoryServer();
-  const mongoDBURL = await mongo.getConnectionString();
-  const connection = await MongoClient.connect(mongoDBURL, {useNewUrlParser: true});
+  const mongo = await MongoMemoryServer.create();
+  const mongoDBURI =  mongo.getUri();
+  const connection = await MongoClient.connect(mongoDBURI, {useNewUrlParser: true});
   database = connection.db();
 }
 
